@@ -20,7 +20,7 @@ AddEventHandler('esx_lockpick:removeKit', function()
 	local _source = source
 	local xPlayer = ESX.GetPlayerFromId(_source)
 
-	if not Config.InfiniteRepairs then
+	if not Config.InfiniteLocks then
 		xPlayer.removeInventoryItem('lockpick', 1)
 		TriggerClientEvent('esx:showNotification', _source, _U('used_kit'))
 	end
