@@ -49,7 +49,7 @@ AddEventHandler('esx_lockpick:onUse', function()
 			if Config.IgnoreAbort then
 				TriggerServerEvent('esx_lockpick:removeKit')
 			end
-			TaskStartScenarioInPlace(playerPed, "mini@repair","fixing_a_player", 0, true)
+			TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_WELDING", 0, true)
 
 			Citizen.CreateThread(function()
 				ThreadID = GetIdOfThisThread()
