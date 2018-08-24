@@ -49,13 +49,13 @@ AddEventHandler('esx_lockpick:onUse', function()
 			if Config.IgnoreAbort then
 				TriggerServerEvent('esx_lockpick:removeKit')
 			end
-			TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_WELDING", 0, true)
+			TaskStartScenarioInPlace(playerPed, "mini@repair","fixing_a_player", 0, true)
 
 			Citizen.CreateThread(function()
 				ThreadID = GetIdOfThisThread()
 				CurrentAction = 'lockpick'
 
-				Citizen.Wait(Config.RepairTime * 1000)
+				Citizen.Wait(Config.LockTime * 1000)
 
 				if CurrentAction ~= nil then
 					SetVehicleDoorsLocked(vehicle, 1)
@@ -85,7 +85,7 @@ AddEventHandler('esx_lockpick:onUse', function()
 
 				if IsControlJustReleased(0, Keys["X"]) then
 					TerminateThread(ThreadID)
-					ESX.ShowNotification(_U('aborted_repair'))
+					ESX.ShowNotification(_U('aborted_lockpicking'))
 					CurrentAction = nil
 				end
 			end
