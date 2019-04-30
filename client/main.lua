@@ -50,11 +50,13 @@ AddEventHandler('esx_lockpick:onUse', function()
 				TriggerServerEvent('esx_lockpick:removeKit')
 			end
 			TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_WELDING", 0, true)
+			
 
 			Citizen.CreateThread(function()
 				ThreadID = GetIdOfThisThread()
 				CurrentAction = 'lockpick'
-
+				local chance =	lockpickchance()
+				if chance == true then
 				Citizen.Wait(Config.LockTime * 1000)
 
 				if CurrentAction ~= nil then
@@ -69,9 +71,13 @@ AddEventHandler('esx_lockpick:onUse', function()
 				if not Config.IgnoreAbort then
 					TriggerServerEvent('esx_lockpick:removeKit')
 				end
-
 				CurrentAction = nil
 				TerminateThisThread()
+			elseif chance == false then
+				Citizen.Wait(Config.LockTime * 1000)
+				ClearPedTasksImmediately(playerPed)
+				ESX.ShowNotification(_U('picklock_failed'))
+			end
 			end)
 		end
 
@@ -95,6 +101,16 @@ AddEventHandler('esx_lockpick:onUse', function()
 		ESX.ShowNotification(_U('no_vehicle_nearby'))
 	end
 end)
+
+function lockpickchance()
+	local nb = math.random(1, Config.percentage)
+    percentage = Config.percentage
+    if(nb < percentage)then
+        return true
+    else
+        return false
+    end
+end
 
 -- NPC Vehicles locked
 Citizen.CreateThread(function()
