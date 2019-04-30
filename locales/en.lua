@@ -5,4 +5,5 @@ Locales ['en'] = {
 	['vehicle_unlocked']			= 'You lockpicked the vehicle!',
 	['abort_hint']					= 'Press ~INPUT_VEH_DUCK~ to cancel',
 	['aborted_lockpicking']		    = 'You aborted the lockpicking',
+	['picklock_failed']		        = 'Damn, the lockpick broke',
 }
