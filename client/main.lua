@@ -58,13 +58,13 @@ AddEventHandler('esx_lockpick:onUse', function()
 				Citizen.Wait(Config.LockTime * 1000)
 
 				if CurrentAction ~= nil then
+					SetVehicleAlarm(vehicle, true)
+					SetVehicleAlarmTimeLeft(vehicle, Config.AlarmTime * 1000)
 					SetVehicleDoorsLocked(vehicle, 1)
 					SetVehicleDoorsLockedForAllPlayers(vehicle, false)
 					ClearPedTasksImmediately(playerPed)
-
 					ESX.ShowNotification(_U('vehicle_unlocked'))
 				end
-
 
 				if not Config.IgnoreAbort then
 					TriggerServerEvent('esx_lockpick:removeKit')
@@ -93,5 +93,28 @@ AddEventHandler('esx_lockpick:onUse', function()
 		end)
 	else
 		ESX.ShowNotification(_U('no_vehicle_nearby'))
+	end
+end)
+
+-- NPC Vehicles locked
+Citizen.CreateThread(function()
+		while true do
+			Wait(0)
+			if Config.NPCVehiclesLocked then
+			local ped = GetPlayerPed(-1)
+			if DoesEntityExist(GetVehiclePedIsTryingToEnter(PlayerPedId(ped))) then
+				local veh = GetVehiclePedIsTryingToEnter(PlayerPedId(ped))
+				local LockStatus = GetVehicleDoorLockStatus(veh)
+				if LockStatus >= 2 then
+						SetVehicleDoorsLocked(veh, 2)
+						locked = true
+				end
+
+				local npc = GetPedInVehicleSeat(veh, -1)
+				if npc then
+						SetPedCanBeDraggedOut(npc, false)
+				end
+			end
+		end
 	end
 end)
