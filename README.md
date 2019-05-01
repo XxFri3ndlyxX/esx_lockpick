@@ -2,6 +2,12 @@
 # esx_lockpick
 Simple lockpick kit script for FiveM ESX servers
 
+What does it do?
+It is a lockpick system that locks all npc car. You need a lockpick to unlock the doors.
+You can set the % of success and set the cops to be alerted if lockpick attempt is failed and with %
+
+Join discord https://discord.gg/xncafqk
+
 ### Requirements
 * es_extended
 
