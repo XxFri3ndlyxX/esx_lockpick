@@ -61,7 +61,8 @@ AddEventHandler('esx_lockpick:onUse', function()
 			if Config.IgnoreAbort then
 				TriggerServerEvent('esx_lockpick:removeKit')
 			end
-			TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_WELDING", 0, true)
+			--TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_WELDING", 0, true)
+			TriggerEvent('esx_lockpick:LockpickAnimation')
 			
 
 			Citizen.CreateThread(function()
@@ -108,7 +109,7 @@ AddEventHandler('esx_lockpick:onUse', function()
 				AddTextComponentString(_U('abort_hint'))
 				DisplayHelpTextFromStringLabel(0, 0, 1, -1)
 
-				if IsControlJustReleased(0, Keys["X"]) then
+				if (IsControlPressed(0, 32) or IsControlPressed(0, 33) or IsControlPressed(0, 34) or IsControlPressed(0, 35)) then
 					TerminateThread(ThreadID)
 					ESX.ShowNotification(_U('aborted_lockpicking'))
 					CurrentAction = nil
@@ -283,4 +284,33 @@ end)
 RegisterNetEvent('esx_lockpick:Enable')
 AddEventHandler('esx_lockpick:Enable', function()
 	pedIsTryingToLockpickVehicle = true
+end)
+
+RegisterNetEvent('esx_lockpick:LockpickAnimation')
+AddEventHandler('esx_lockpick:LockpickAnimation', function()
+    local ped = GetPlayerPed(-1)
+	local x,y,z = table.unpack(GetEntityCoords(playerPed, true))
+    if not IsEntityPlayingAnim(ped, "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer", 3) then
+        RequestAnimDict("anim@amb@clubhouse@tutorial@bkr_tut_ig3@")
+        while not HasAnimDictLoaded("anim@amb@clubhouse@tutorial@bkr_tut_ig3@") do
+            Citizen.Wait(100)
+        end
+		--SetEntityCoords(PlayerPedId(), 1057.54, -3197.39, -40.14)
+        --SetEntityHeading(PlayerPedId(), 171.5)
+        Wait(100)
+        TaskPlayAnim(ped, "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer", 8.0, -8, -1, 49, 0, 0, 0, 0)
+        Wait(2000)
+        while IsEntityPlayingAnim(ped, "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer", 3) do
+            Wait(1)
+            if (IsControlPressed(0, 32) or IsControlPressed(0, 33) or IsControlPressed(0, 34) or IsControlPressed(0, 35)) then
+								ClearPedTasksImmediately(ped)
+								if CurrentAction ~= nil then
+								TerminateThread(ThreadID)
+								ESX.ShowNotification(_U('aborted_lockpicking'))
+								CurrentAction = nil
+                break
+						end
+					end
+        end
+    end
 end)
