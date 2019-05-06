@@ -6,7 +6,7 @@ Locales ['en'] = {
 	['abort_hint']					= 'Press ~INPUTGROUP_MOVE~ to cancel.',
 	['aborted_lockpicking']		    = 'You aborted the lockpicking.',
 	['picklock_failed']		        = 'Damn, the lockpick broke.',
-	['911']		                    = '911 Call.',
+	['911Call']		                = '911 Call.',
 	['911Lockpick']		            = 'Lockpicking',
-	['call']		                = 'Someone is Lockpicking a vehicle. I attached a picture of the person.',
+	['Lockcall']		            = 'Someone is Lockpicking a vehicle. I attached a picture of the person.',
 }
