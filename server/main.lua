@@ -34,16 +34,16 @@ end)
 
 RegisterServerEvent('esx_lockpick:InProgress')
 AddEventHandler('esx_lockpick:InProgress', function(street1, street2, sex)
-    TriggerClientEvent("esx_lockpick:outlawNotify", -1, "~r~Someone is lockpicking a vehicle")
+    TriggerClientEvent("esx_lockpick:outlawLockNotify", -1, "~r~Someone is lockpicking a vehicle")
 end)
 
 
 RegisterServerEvent('esx_lockpick:InProgressS1')
 AddEventHandler('esx_lockpick:InProgressS1', function(street1, sex)
-    TriggerClientEvent("esx_lockpick:outlawNotify", -1, "~r~Someone is lockpicking a vehicle")
+    TriggerClientEvent("esx_lockpick:outlawLockNotify", -1, "~r~Someone is lockpicking a vehicle")
 end)
 
 RegisterServerEvent('esx_lockpick:InProgressPos')
-AddEventHandler('esx_lockpick:InProgressPos', function(gx, gy, gz)
-    TriggerClientEvent('esx_lockpick:location', -1, gx, gy, gz)
+AddEventHandler('esx_lockpick:InProgressPos', function(tx, ty, tz)
+    TriggerClientEvent('esx_lockpick:location', -1, tx, ty, tz)
 end)
