@@ -14,7 +14,8 @@ Join discord https://discord.gg/xncafqk
 
 ### Requirements
 * es_extended
-* Pnotify
+* esx_policejob
+* pNotify
 
 If you do not like Pnotify then Modify it to your needs. 
 
