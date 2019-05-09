@@ -5,11 +5,18 @@ Simple lockpick kit script for FiveM ESX servers
 What does it do?
 It is a lockpick system that locks all npc car. You need a lockpick to unlock the doors.
 You can set the % of success and set the cops to be alerted if lockpick attempt is failed and with %
+You can also set the alarm to be triggered fox x ammount of time.
+You can also trigger a jammed handbrake when successfully unlocked the vehicle.
+
+My attempt on making hotwiring longer failed so for the time being the jammed handbrake will do the job.
 
 Join discord https://discord.gg/xncafqk
 
 ### Requirements
 * es_extended
+* Pnotify
+
+If you do not like Pnotify then Modify it to your needs. 
 
 ### Installation
 Download the [latest release](https://github.com/xxfri3ndlyxx/esx_repairkit/releases/latest) and rename the folder to esx_lockpick.
