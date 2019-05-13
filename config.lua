@@ -11,3 +11,28 @@ Config.Locale				= 'en'   -- Change the language. Currently only en  but will ad
 Config.percentage           = 2	     -- (min1) if 1 then cops will be called every time=100%, 2=50%, 3=33%, 4=25%, 5=20%.
 Config.CallCops             = true   -- Set to true if you want cops to be alerted when lockpicking a vehicle no matter what the outcome is.
 Config.CallCopsPercent      = 2      -- (min1) if 1 then cops will be called every time=100%, 2=50%, 3=33%, 4=25%, 5=20%.
+Config.chance               = 3      -- chance of being unlocked in percentage
+
+Config.blacklist = { -- vehicles that will always be locked when spawned naturally
+  "T20",
+  "police",
+  "police2",
+  "sheriff3",
+  "sheriff2",
+  "sheriff",
+  "riot",
+  "fbi",
+  "hwaycar2",
+  "hwaycar3",
+  "hwaycar10",
+  "hwaycar",
+  "polf430",
+  "policeb",
+  "police7",
+  "RHINO"
+}
+
+Config.job_whitelist = {
+  "police",
+  "EMS"
+}
