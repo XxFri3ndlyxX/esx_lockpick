@@ -31,7 +31,7 @@ Install esx_lockpick.sql
 Add lockpick to your shop.
 ```
 ### CREDIT
-This is a modified version of esx_repairkit https://github.com/condolent/esx_repairkit/releases/latest)
+This is a modified version of esx_repairkit https://github.com/condolent/esx_repairkit/releases/latest)  
 I use the cooldown from  
 https://github.com/KlibrDM/esx_carthief  
 I used the police notification code from  
