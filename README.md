@@ -23,7 +23,7 @@ Join discord https://discord.gg/xncafqk
 If you do not like Pnotify then Modify it to your needs. 
 
 ### Installation
-Download the [latest release](https://github.com/xxfri3ndlyxx/esx_repairkit/releases/latest) and rename the folder to esx_lockpick.
+Download the [latest release](https://github.com/XxFri3ndlyxX/esx_lockpick/archive/master.zip) esx_lockpick.
 
 Drag the folder into your `<server-data>/resources/[esx]` folder and add this to your server.cfg
 ```
