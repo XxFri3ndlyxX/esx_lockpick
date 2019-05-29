@@ -19,6 +19,7 @@ Join discord https://discord.gg/xncafqk
 * es_extended
 * esx_policejob
 * pNotify
+* mythic_progressbar https://github.com/XxFri3ndlyxX/progressbar
 
 If you do not like Pnotify then Modify it to your needs. 
 
