@@ -37,6 +37,7 @@ RegisterNetEvent('esx_lockpick:onUse')
 AddEventHandler('esx_lockpick:onUse', function()
 	local playerPed		= GetPlayerPed(-1)
     local coords		= GetEntityCoords(playerPed)
+    
 
 	if IsAnyVehicleNearPoint(coords.x, coords.y, coords.z, 5.0) then
 		local vehicle = nil
@@ -52,7 +53,40 @@ AddEventHandler('esx_lockpick:onUse', function()
 				TriggerServerEvent('esx_lockpick:removeKit')
 			end
 
-			TriggerEvent('esx_lockpick:LockpickAnimation')
+            Citizen.Wait(1000)
+
+            TriggerEvent("mythic_progbar:client:progress", {
+                name = "Lockpicking",
+                duration = Config.LockTime * 1000,
+                label = "Lockpicking In Progress",
+                useWhileDead = false,
+                canCancel = true,
+                controlDisables = {
+                    disableMovement = true,
+                    disableCarMovement = true,
+                    disableMouse = false,
+                    disableCombat = true,
+                },
+                animation = {
+                    animDict = "anim@amb@clubhouse@tutorial@bkr_tut_ig3@",
+                    anim = "machinic_loop_mechandplayer",
+                    flags = 49,
+                },
+            }, function(status)
+                if not status then
+                    exports.pNotify:SendNotification({
+                        text = (_U('lockpicked_successful')), 
+                        type = "success", 
+                        timeout = 1000, 
+                        layout = "centerRight", 
+                        queue = "right",
+                        killer = false,
+                        animation = {open = "gta_effects_fade_in", close = "gta_effects_fade_out"}
+                    })
+                end
+            end)
+
+            Citizen.Wait(1000)
 			
 			Citizen.CreateThread(function()
 				ThreadID = GetIdOfThisThread()
@@ -65,8 +99,8 @@ AddEventHandler('esx_lockpick:onUse', function()
 						if randomReport == Config.CallCopsPercent then
 							TriggerServerEvent('esx_lockpick:Notify')
 						end
-					end
-					exports.pNotify:SendNotification({text = "Lockpicking vehicle, please wait...", type = "error", timeout = Config.NotificationLockTime * 1000, layout = "centerRight", queue = "right", animation = {open = "gta_effects_fade_in", close = "gta_effects_fade_out"}})
+                    end
+                    
 				Citizen.Wait(Config.LockTime * 1000)
 
                 if CurrentAction ~= nil then
@@ -75,17 +109,48 @@ AddEventHandler('esx_lockpick:onUse', function()
 					SetVehicleDoorsLocked(vehicle, 1)
 					SetVehicleDoorsLockedForAllPlayers(vehicle, false)
                     ClearPedTasksImmediately(playerPed)
-                    ESX.ShowNotification(_U('vehicle_unlocked'))
+                    exports.pNotify:SendNotification({
+                        text = (_U('vehicle_unlocked')), 
+                        type = "success", 
+                        timeout = 1000, 
+                        layout = "centerRight", 
+                        queue = "right",
+                        killer = false,
+                        animation = {open = "gta_effects_fade_in", close = "gta_effects_fade_out"}
+                    })
                     SetVehicleNeedsToBeHotwired(vehicle, true)
                     IsVehicleNeedsToBeHotwired(vehicle)
                     TaskEnterVehicle(playerPed, vehicle, 10.0, -1, 1.0, 1, 0)
-                    Wait(1000)
-                    TriggerEvent('esx_lockpick:HotWireAnimation')
-                    FreezeEntityPosition(vehicle, true)
-                    exports.pNotify:SendNotification({text = "Unjamming The handbrake", type = "error", timeout = Config.JammedHandbrakeTime * 1000, layout = "centerRight", queue = "right", animation = {open = "gta_effects_fade_in", close = "gta_effects_fade_out"}})
-                    Citizen.Wait(Config.JammedHandbrakeTime * 1000)
-                    ClearPedTasks(playerPed)
-                    FreezeEntityPosition(vehicle, false)
+                    Wait(2000)
+                    TriggerEvent("mythic_progbar:client:progress", {
+                        name = "Unjamming_Handbrakes",
+                        duration = Config.JammedHandbrakeTime * 1000,
+                        label = "Unjamming Handbrakes In Progress",
+                        useWhileDead = false,
+                        canCancel = true,
+                        controlDisables = {
+                            disableMovement = true,
+                            disableCarMovement = true,
+                            disableMouse = false,
+                            disableCombat = true,
+                        },
+                        animation = {
+                            animDict = "veh@std@ds@base",
+                            anim = "hotwire",
+                        },
+                    }, function(status)
+                        if not status then
+                            exports.pNotify:SendNotification({
+                                text = (_U('unjammed_handbrake')), 
+                                type = "success", 
+                                timeout = 1000, 
+                                layout = "centerRight", 
+                                queue = "right",
+                                killer = false,
+                                animation = {open = "gta_effects_fade_in", close = "gta_effects_fade_out"}
+                            })
+                        end
+                    end)
                 end
 			else
 				if Config.CallCops then
@@ -95,7 +160,6 @@ AddEventHandler('esx_lockpick:onUse', function()
 						TriggerServerEvent('esx_lockpick:Notify')
 					end
 				end
-				exports.pNotify:SendNotification({text = "Lockpicking vehicle, please wait...", type = "error", timeout = Config.NotificationLockTime * 1000, layout = "centerRight", queue = "right", animation = {open = "gta_effects_fade_in", close = "gta_effects_fade_out"}})
 				Citizen.Wait(Config.LockTime * 1000)
 	            ClearPedTasksImmediately(playerPed)
 				ESX.ShowNotification(_U('picklock_failed'))
@@ -123,7 +187,6 @@ AddEventHandler('esx_lockpick:onUse', function()
 					CurrentAction = nil
 				end
 			end
-
 		end)
 	else
 		ESX.ShowNotification(_U('no_vehicle_nearby'))
@@ -150,7 +213,6 @@ local function has_value (tab, val)
             return true
         end
     end
-
     return false
 end
 Citizen.CreateThread(function()
@@ -215,22 +277,19 @@ end)
 --                 NOTIFICATION                 --
 --//////////////////////////////////////////////--
 GetPlayerName()
+
 RegisterNetEvent('esx_lockpick:outlawLockNotify')
 AddEventHandler('esx_lockpick:outlawLockNotify', function(alert)
-    if PlayerData.job ~= nil and PlayerData.job.name == 'police' then
-        LockNotify(alert)
+	if PlayerData.job ~= nil and PlayerData.job.name == 'police' then
+		TriggerEvent('esx_lockpick:notify2')
+		PlaySoundFrontend(-1, "Event_Start_Text", "GTAO_FM_Events_Soundset", 0)
     end
 end)
---[[ function Notify(text)
-    SetNotificationTextEntry('STRING')
-    AddTextComponentString(text)
-    DrawNotification(false, false)
-end ]]
-function LockNotify(msg)
-    local mugshot, mugshotStr = ESX.Game.GetPedMugshot(GetPlayerPed(-1))
-    ESX.ShowAdvancedNotification(_U('911Call'), _U('911Lockpick'), _U('Lockcall'), mugshotStr, 1)
-    UnregisterPedheadshot(mugshot)
-end
+
+RegisterNetEvent("esx_lockpick:notify2")
+AddEventHandler("esx_lockpick:notify2", function(msg, target)
+	ESX.ShowAdvancedNotification(_U('911Call'), _U('911Lockpick'), _U('Lockcall'), 'CHAR_CALL911', 7)
+end)
 --//////////////////////////////////////////////--
 --                   NETWORK                    --
 --//////////////////////////////////////////////--
@@ -324,92 +383,4 @@ end)
 RegisterNetEvent('esx_lockpick:Enable')
 AddEventHandler('esx_lockpick:Enable', function()
 	pedIsTryingToLockpickVehicle = true
-end)
---//////////////////////////////////////////////--
---           LOCKPICK ANIMATION                 --
---//////////////////////////////////////////////--
-RegisterNetEvent('esx_lockpick:LockpickAnimation')
-AddEventHandler('esx_lockpick:LockpickAnimation', function()
-    local ped = GetPlayerPed(-1)
-    local x,y,z = table.unpack(GetEntityCoords(playerPed, true))
-    if not IsEntityPlayingAnim(ped, "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer", 3) then
-        RequestAnimDict("anim@amb@clubhouse@tutorial@bkr_tut_ig3@")
-        while not HasAnimDictLoaded("anim@amb@clubhouse@tutorial@bkr_tut_ig3@") do
-            Citizen.Wait(100)
-        end
-        --SetEntityCoords(PlayerPedId(), 1057.54, -3197.39, -40.14)
-        --SetEntityHeading(PlayerPedId(), 171.5)
-        Wait(100)
-        TaskPlayAnim(ped, "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer", 8.0, -8, -1, 49, 0, 0, 0, 0)
-        Wait(2000)
-        while IsEntityPlayingAnim(ped, "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer", 3) do
-            Wait(1)
-            if (IsControlPressed(0, 32) or IsControlPressed(0, 33) or IsControlPressed(0, 34) or IsControlPressed(0, 35)) then
-                ClearPedTasksImmediately(ped)
-                if CurrentAction ~= nil then
-                    TerminateThread(ThreadID)
-                    ESX.ShowNotification(_U('aborted_lockpicking'))
-                    CurrentAction = nil
-                    break
-                end
-            end
-        end
-    end
-end)
---//////////////////////////////////////////////--
---               HOTWRING VEHCILE               --
---//////////////////////////////////////////////--
-RegisterNetEvent('esx_lockpick:HotWireTime')
-AddEventHandler('esx_lockpick:HotWireTime', function()
-	Citizen.CreateThread(function()
-        while true do
-            Wait(0)
-                local player = GetPlayerPed(-1)
-                local InsideVeh = IsPedInAnyVehicle(player, true)
-                local vehh = GetVehiclePedIsIn(PlayerPedId(player))
-                local HotWireStatus = IsVehicleNeedsToBeHotwired(vehh)
-                if InsideVeh then
-                if HotWireStatus then
-                    FreezeEntityPosition(vehh, true)
-                    TriggerEvent('esx_lockpick:HotWireAnimation')
-                    Citizen.Wait(30000)
-                    ClearPedTasks(player)
-                    FreezeEntityPosition(vehh, false)
-                    ESX.ShowNotification('HotWire')
-                end
-            end
-        end
-    end)
-end)
-
---//////////////////////////////////////////////--
---             HOTWIRING ANIMATION              --
---//////////////////////////////////////////////--
-RegisterNetEvent('esx_lockpick:HotWireAnimation')
-AddEventHandler('esx_lockpick:HotWireAnimation', function()
-    local ped = GetPlayerPed(-1)
-    local x,y,z = table.unpack(GetEntityCoords(playerPed, true))
-    if not IsEntityPlayingAnim(ped, "veh@std@ds@base", "hotwire", 3) then
-        RequestAnimDict("veh@std@ds@base")
-        while not HasAnimDictLoaded("veh@std@ds@base") do
-            Citizen.Wait(100)
-        end
-        --SetEntityCoords(PlayerPedId(), 1057.54, -3197.39, -40.14)
-        --SetEntityHeading(PlayerPedId(), 171.5)
-        Wait(100)
-        TaskPlayAnim(ped, "veh@std@ds@base", "hotwire", 8.0, -8, -1, 49, 0, 0, 0, 0)
-        Wait(2000)
-        while IsEntityPlayingAnim(ped, "veh@std@ds@base", "hotwire", 3) do
-            Wait(1)
-             if IsControlPressed(0, 243) then
-                ClearPedTasksImmediately(ped)
-                if CurrentAction ~= nil then
-                    TerminateThread(ThreadID)
-                    ESX.ShowNotification(_U('aborted_lockpicking'))
-                    CurrentAction = nil
-                    break
-                end
-            end 
-        end
-    end
 end)
