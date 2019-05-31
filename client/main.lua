@@ -55,7 +55,7 @@ AddEventHandler('esx_lockpick:onUse', function()
 
             Citizen.Wait(1000)
 
-            TriggerEvent("mythic_progbar:client:progress", {
+            TriggerEvent("mythic_progressbar:client:progress", {
                 name = "Lockpicking",
                 duration = Config.LockTime * 1000,
                 label = "Lockpicking In Progress",
@@ -122,7 +122,7 @@ AddEventHandler('esx_lockpick:onUse', function()
                     IsVehicleNeedsToBeHotwired(vehicle)
                     TaskEnterVehicle(playerPed, vehicle, 10.0, -1, 1.0, 1, 0)
                     Wait(2000)
-                    TriggerEvent("mythic_progbar:client:progress", {
+                    TriggerEvent("mythic_progressbar:client:progress", {
                         name = "Unjamming_Handbrakes",
                         duration = Config.JammedHandbrakeTime * 1000,
                         label = "Unjamming Handbrakes In Progress",
