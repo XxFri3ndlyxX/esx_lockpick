@@ -7,6 +7,7 @@ local showOutlaw = true --Set if show outlaw act on map
 local blipTime = 35 --in second
 local showcopsmisbehave = true --show notification when cops steal too
 local timing = timer * 60000 --Don't touche it
+local cancel = false
 
 Citizen.CreateThread(function()
 	while ESX == nil do
@@ -74,6 +75,7 @@ AddEventHandler('esx_lockpick:onUse', function()
                 },
             }, function(status)
                 if not status then
+                    cancel = false
                     exports.pNotify:SendNotification({
                         text = (_U('lockpicked_successful')), 
                         type = "success", 
@@ -83,6 +85,8 @@ AddEventHandler('esx_lockpick:onUse', function()
                         killer = false,
                         animation = {open = "gta_effects_fade_in", close = "gta_effects_fade_out"}
                     })
+                else
+                    cancel = true
                 end
             end)
 
@@ -104,6 +108,7 @@ AddEventHandler('esx_lockpick:onUse', function()
 				Citizen.Wait(Config.LockTime * 1000)
 
                 if CurrentAction ~= nil then
+                    if not cancel then
 					SetVehicleAlarm(vehicle, true)
 					SetVehicleAlarmTimeLeft(vehicle, Config.AlarmTime * 1000)
 					SetVehicleDoorsLocked(vehicle, 1)
@@ -152,6 +157,7 @@ AddEventHandler('esx_lockpick:onUse', function()
                         end
                     end)
                 end
+            end
 			else
 				if Config.CallCops then
 					local randomReport = math.random(1, Config.CallCopsPercent)
@@ -181,7 +187,7 @@ AddEventHandler('esx_lockpick:onUse', function()
 				AddTextComponentString(_U('abort_hint'))
 				DisplayHelpTextFromStringLabel(0, 0, 1, -1)
 
-				if (IsControlPressed(0, 32) or IsControlPressed(0, 33) or IsControlPressed(0, 34) or IsControlPressed(0, 35)) then
+				if IsControlJustPressed(0, 178) then
 					TerminateThread(ThreadID)
 					ESX.ShowNotification(_U('aborted_lockpicking'))
 					CurrentAction = nil
