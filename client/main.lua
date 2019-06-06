@@ -231,12 +231,12 @@ Citizen.CreateThread(function()
 			local lock = GetVehicleDoorLockStatus(veh)
 				
 				-- Get the conductor door angle, open if value > 0.0
-				local doorAngle = GetVehicleDoorAngleRatio(veh, 0)
+				--local doorAngle = GetVehicleDoorAngleRatio(veh, 0)
 			
 				-- normalizes chance
-				if Config.chance > 100 then
+				if Config.chance >= 100 then
 					Config.chance = 100
-				elseif Config.chance < 0 then
+				elseif Config.chance <= 0 then
 					Config.chance = 0
 				end
 			
@@ -244,9 +244,9 @@ Citizen.CreateThread(function()
 				local lucky = (math.random(100) < Config.chance)
 			
 				-- Set lucky if conductor door is open
-				if doorAngle > 0.0 then
+				--[[ if doorAngle > 0.5 then
 					lucky = true
-				end
+				end ]]
 			
 				-- check if vehicle is in blacklist
 				local blacklisted = false
