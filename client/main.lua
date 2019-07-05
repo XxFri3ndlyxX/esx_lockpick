@@ -56,6 +56,11 @@ AddEventHandler('esx_lockpick:onUse', function()
 
             Citizen.Wait(1000)
 
+	    RequestAnimDict('anim@amb@clubhouse@tutorial@bkr_tut_ig3@')
+            while not HasAnimDictLoaded('anim@amb@clubhouse@tutorial@bkr_tut_ig3@') do
+                Citizen.Wait(0)
+            end
+            TaskPlayAnim(GetPlayerPed(-1), 'anim@amb@clubhouse@tutorial@bkr_tut_ig3@' , 'machinic_loop_mechandplayer' ,8.0, -8.0, -1, 1, 0, false, false, false )			
             TriggerEvent("mythic_progressbar:client:progress", {
                 name = "Lockpicking",
                 duration = Config.LockTime * 1000,
